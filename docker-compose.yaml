@@ -1,13 +1,26 @@
 version: "3.9"
 services:
-  dremio:
-    container_name: dremio
-    image: dremio/dremio-oss:latest
-    platform: linux/x86_64
+  jupyterlab:
+    image: jupyterlab:latest
+    container_name: jupyterlab
+    build:
+      context: services/jupyterlab/
+      dockerfile: Dockerfile
+    env_file:
+      - ./services/.env
+    volumes:
+      - ./services/jupyterlab/notebooks/:/opt/workspace/
     ports:
-    - 9047:9047
-    - 31010:31010
-    - 32010:32010
+      - 8888:8888
+
+        #  dremio:
+        #    container_name: dremio
+        #    image: dremio/dremio-oss:latest
+        #    platform: linux/x86_64
+        #    ports:
+        #    - 9047:9047
+        #    - 31010:31010
+        #    - 32010:32010
 
   nessie:
       container_name: nessie
@@ -21,10 +34,11 @@ services:
     ports:
       - 9000:9000
       - 9001:9001
-    environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
+    env_file:
+      - ./services/.env
     command: server /data --console-address ":9001"
+    volumes:
+      - ./minio_data:/data
 
   init-minio:
     container_name: minio-init
