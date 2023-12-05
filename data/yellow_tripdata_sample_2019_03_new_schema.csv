@@ -1,0 +1,2 @@
+vendor_id,pickup_datetime,dropoff_datetime,passenger_count,pickup_location_id,dropoff_location_id,fare_amount,stars
+2,2019-02-28 00:39:50,2019-02-28 00:44:23,5,79,148,5.0,5
